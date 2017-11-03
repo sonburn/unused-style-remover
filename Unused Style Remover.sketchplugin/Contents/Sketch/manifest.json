@@ -1,0 +1,26 @@
+{
+	"author" : "Jason Burns",
+	"commands" : [
+		{
+			"name" : "Unused Style Remover",
+			"shortcut" : "cmd option shift u",
+			"identifier" : "styleRemover",
+			"description" : "Remove unused layer and text styles.",
+			"script" : "script.cocoascript",
+			"icon" : "icon-sr.png"
+		}
+	],
+	"menu" : {
+		"title" : "Unused Style Remover",
+		"items" : [
+			"styleRemover"
+		],
+		"isRoot" : true
+	},
+	"identifier" : "com.sonburn.sketchplugins.unused-style-remover",
+	"version" : "0.1",
+	"description" : "Remove unused layer and text styles.",
+	"authorEmail" : "jason.burns@synchronoss.com",
+	"name" : "Unused Style Remover",
+	"appcast" : "https://raw.githubusercontent.com/sonburn/unused-style-remover/master/appcast.xml"
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title>Unused Style Remover</title>
+		<link>http://sparkle-project.org/files/sparkletestcast.xml</link>
+		<description>Remove unused layer and text styles.</description>
+		<language>en</language>
+		<item>
+			<title>Version 0.1</title>
+			<description>
+				<![CDATA[
+				<ul>
+				<li>Initial commit.</li>
+				</ul>
+				]]>
+			</description>
+			<enclosure url="https://github.com/sonburn/unused-style-remover/archive/master.zip" sparkle:version="0.1" />
+		</item>
+	</channel>
+</rss>
