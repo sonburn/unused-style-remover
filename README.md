@@ -2,7 +2,7 @@
 
 Remove unused layer and text styles.
 
-![Unused Style Remover](https://raw.githubusercontent.com/sonburn/unused-style-remover/master/Screenshots/Symbol%20Swapper.png)
+![Unused Style Remover](https://raw.githubusercontent.com/sonburn/unused-style-remover/master/Screenshots/Unused%20Style%20Remover.png)
 
 <a href="http://bit.ly/SketchRunnerWebsite">
 	<img width="160" height="41" src="http://bit.ly/RunnerBadgeBlue" alt="runner-badge-blue">
