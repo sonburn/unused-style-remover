@@ -18,7 +18,7 @@
 		"isRoot" : true
 	},
 	"identifier" : "com.sonburn.sketchplugins.unused-style-remover",
-	"version" : "0.1",
+	"version" : "0.2",
 	"description" : "Remove unused layer and text styles.",
 	"authorEmail" : "jason.burns@synchronoss.com",
 	"name" : "Unused Style Remover",

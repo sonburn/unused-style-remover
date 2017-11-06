@@ -39,6 +39,7 @@ To find your plugins directory...
 
 # Changelog
 
+* **0.2** - Added section checkboxes, parameterized strings, and improved empty states.
 * **0.1** - Initial commit.
 
 # Contact

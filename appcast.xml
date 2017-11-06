@@ -6,15 +6,15 @@
 		<description>Remove unused layer and text styles.</description>
 		<language>en</language>
 		<item>
-			<title>Version 0.1</title>
+			<title>Version 0.2</title>
 			<description>
 				<![CDATA[
 				<ul>
-				<li>Initial commit.</li>
+				<li>Added section checkboxes, parameterized strings, and improved empty states.</li>
 				</ul>
 				]]>
 			</description>
-			<enclosure url="https://github.com/sonburn/unused-style-remover/archive/master.zip" sparkle:version="0.1" />
+			<enclosure url="https://github.com/sonburn/unused-style-remover/archive/master.zip" sparkle:version="0.2" />
 		</item>
 	</channel>
 </rss>

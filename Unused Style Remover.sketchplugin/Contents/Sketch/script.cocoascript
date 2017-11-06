@@ -1,4 +1,12 @@
-var strPluginName = "Unused Style Remover";
+var strPluginName = "Unused Style Remover",
+	strPluginDesc = "Remove unused layer and text styles.",
+	strLayerStyleLabel = "Unused Layer Styles",
+	strTextStyleLabel = "Unused Text Styles",
+	strConfirmButtonLabel = "Remove Unused Styles",
+	strCancelButtonLabel = "Cancel",
+	strCloseButtonLabel = "Close",
+	strLayerStyleRemoved = " layer styles, and ",
+	strTextStyleRemoved = " text styles were removed";
 
 var onRun = function(context) {
 	var alertWindow = COSAlertWindow.new(),
@@ -7,61 +15,107 @@ var onRun = function(context) {
 
 	alertWindow.setIcon(pluginIcon);
 	alertWindow.setMessageText(strPluginName);
-	alertWindow.setInformativeText("Remove unused layer and text styles.");
+	alertWindow.setInformativeText(strPluginDesc);
 
 	var contentFrameWidth = 300,
 		contentFrameHeight = 192,
-		contentFrameGutter = 15;
+		contentFrameGutter = 15,
+		listItemHeight = 24;
 
 	var unusedLayerStyles = getUnusedStyles(0);
 
-	var layerStyleWidth = contentFrameWidth - contentFrameGutter,
-		layerStyleHeight = 24,
-		layerStyleLabel = createBoldLabel("Unused Layer Styles (" + unusedLayerStyles.length + ")",12,NSMakeRect(0,0,contentFrameWidth,16)),
-		layerStyleFrame = createScrollView(NSMakeRect(0,0,contentFrameWidth,contentFrameHeight)),
-		layerStyleContent = createContentView(NSMakeRect(0,0,layerStyleWidth,unusedLayerStyles.length*layerStyleHeight)),
-		layerStyleCount = 0,
-		layerStyleCheckboxes = [];
+	if (unusedLayerStyles.length > 0) {
+		var layerStyleTitle = createContentView(NSMakeRect(0,0,contentFrameWidth,18)),
+			layerStyleCheckbox = createCheckbox({name:"",value:1},1,NSMakeRect(0,0,18,18)),
+			layerStyleLabel = createBoldLabel(strLayerStyleLabel + " (" + unusedLayerStyles.length + ")",12,NSMakeRect(22,0,contentFrameWidth-22,16));
 
-	for (var i = 0; i < unusedLayerStyles.length; i++) {
-		var unusedLayerStyle = createCheckbox({name:unusedLayerStyles[i].name(),value:i},1,NSMakeRect(0,layerStyleHeight*layerStyleCount,layerStyleWidth,layerStyleHeight));
+		layerStyleCheckbox.setAction("callAction:");
+		layerStyleCheckbox.setCOSJSTargetFunction(function(sender) {
+			for (var i = 0; i < layerStyleCheckboxes.length; i++) {
+				layerStyleCheckboxes[i].state = sender.state();
+			}
+		});
 
-		layerStyleCheckboxes.push(unusedLayerStyle);
-		layerStyleContent.addSubview(unusedLayerStyle);
+		layerStyleTitle.addSubview(layerStyleCheckbox);
+		layerStyleTitle.addSubview(layerStyleLabel);
 
-		layerStyleCount++;
+		alertWindow.addAccessoryView(layerStyleTitle);
+
+		var layerStyleWidth = contentFrameWidth - contentFrameGutter,
+			layerStyleFrameHeight = (unusedLayerStyles.length < 8) ? unusedLayerStyles.length * listItemHeight : contentFrameHeight,
+			layerStyleFrame = createScrollView(NSMakeRect(0,0,contentFrameWidth,layerStyleFrameHeight)),
+			layerStyleContent = createContentView(NSMakeRect(0,0,layerStyleWidth,unusedLayerStyles.length*listItemHeight)),
+			layerStyleCount = 0,
+			layerStyleCheckboxes = [];
+
+		for (var i = 0; i < unusedLayerStyles.length; i++) {
+			var unusedLayerStyle = createCheckbox({name:unusedLayerStyles[i].name(),value:i},1,NSMakeRect(0,listItemHeight*layerStyleCount,layerStyleWidth,listItemHeight));
+
+			layerStyleCheckboxes.push(unusedLayerStyle);
+			layerStyleContent.addSubview(unusedLayerStyle);
+
+			layerStyleCount++;
+		}
+
+		layerStyleFrame.setDocumentView(layerStyleContent);
+
+		alertWindow.addAccessoryView(layerStyleFrame);
+	} else {
+		var layerStyleLabel = createBoldLabel(strLayerStyleLabel + " (" + unusedLayerStyles.length + ")",12,NSMakeRect(0,0,contentFrameWidth,16));
+
+		alertWindow.addAccessoryView(layerStyleLabel);
 	}
-
-	layerStyleFrame.setDocumentView(layerStyleContent);
 
 	var unusedTextStyles = getUnusedStyles(1);
 
-	var textStyleWidth = contentFrameWidth - contentFrameGutter,
-		textStyleHeight = 24,
-		textStyleLabel = createBoldLabel("Unused Text Styles (" + unusedTextStyles.length + ")",12,NSMakeRect(0,0,contentFrameWidth,16)),
-		textStyleFrame = createScrollView(NSMakeRect(0,0,contentFrameWidth,contentFrameHeight)),
-		textStyleContent = createContentView(NSMakeRect(0,0,textStyleWidth,unusedTextStyles.length*textStyleHeight)),
-		textStyleCount = 0,
-		textStyleCheckboxes = [];
+	if (unusedTextStyles.length > 0) {
+		var textStyleTitle = createContentView(NSMakeRect(0,0,contentFrameWidth,18)),
+			textStyleCheckbox = createCheckbox({name:"",value:1},1,NSMakeRect(0,0,18,18)),
+			textStyleLabel = createBoldLabel(strTextStyleLabel + " (" + unusedTextStyles.length + ")",12,NSMakeRect(22,0,contentFrameWidth-22,16));
 
-	for (var i = 0; i < unusedTextStyles.length; i++) {
-		var unusedTextStyle = createCheckbox({name:unusedTextStyles[i].name(),value:i},1,NSMakeRect(0,textStyleHeight*textStyleCount,textStyleWidth,textStyleHeight));
+		textStyleCheckbox.setAction("callAction:");
+		textStyleCheckbox.setCOSJSTargetFunction(function(sender) {
+			for (var i = 0; i < textStyleCheckboxes.length; i++) {
+				textStyleCheckboxes[i].state = sender.state();
+			}
+		});
 
-		textStyleCheckboxes.push(unusedTextStyle);
-		textStyleContent.addSubview(unusedTextStyle);
+		textStyleTitle.addSubview(textStyleCheckbox);
+		textStyleTitle.addSubview(textStyleLabel);
 
-		textStyleCount++;
+		alertWindow.addAccessoryView(textStyleTitle);
+
+		var textStyleWidth = contentFrameWidth - contentFrameGutter,
+			textStyleFrameHeight = (unusedTextStyles.length < 8) ? unusedTextStyles.length * listItemHeight : contentFrameHeight,
+			textStyleFrame = createScrollView(NSMakeRect(0,0,contentFrameWidth,textStyleFrameHeight)),
+			textStyleContent = createContentView(NSMakeRect(0,0,textStyleWidth,unusedTextStyles.length*listItemHeight)),
+			textStyleCount = 0,
+			textStyleCheckboxes = [];
+
+		for (var i = 0; i < unusedTextStyles.length; i++) {
+			var unusedTextStyle = createCheckbox({name:unusedTextStyles[i].name(),value:i},1,NSMakeRect(0,listItemHeight*textStyleCount,textStyleWidth,listItemHeight));
+
+			textStyleCheckboxes.push(unusedTextStyle);
+			textStyleContent.addSubview(unusedTextStyle);
+
+			textStyleCount++;
+		}
+
+		textStyleFrame.setDocumentView(textStyleContent);
+
+		alertWindow.addAccessoryView(textStyleFrame);
+	} else {
+		var textStyleLabel = createBoldLabel(strTextStyleLabel + " (" + unusedTextStyles.length + ")",12,NSMakeRect(0,0,contentFrameWidth,16));
+
+		alertWindow.addAccessoryView(textStyleLabel);
 	}
 
-	textStyleFrame.setDocumentView(textStyleContent);
-
-	alertWindow.addAccessoryView(layerStyleLabel);
-	alertWindow.addAccessoryView(layerStyleFrame);
-	alertWindow.addAccessoryView(textStyleLabel);
-	alertWindow.addAccessoryView(textStyleFrame);
-
-	alertWindow.addButtonWithTitle("Remove Unused Styles");
-	alertWindow.addButtonWithTitle("Close");
+	if (unusedLayerStyles.length == 0 && unusedTextStyles.length == 0) {
+		alertWindow.addButtonWithTitle(strCloseButtonLabel);
+	} else {
+		alertWindow.addButtonWithTitle(strConfirmButtonLabel);
+		alertWindow.addButtonWithTitle(strCancelButtonLabel);
+	}
 
 	var alertResponse = alertWindow.runModal();
 
@@ -87,21 +141,8 @@ var onRun = function(context) {
 
 		context.document.reloadInspector();
 
-		context.document.showMessage(layerStylesToRemove.length + " layer styles, and " + textStylesToRemove.length + " text styles were removed");
+		context.document.showMessage(layerStylesToRemove.length + strLayerStyleRemoved + textStylesToRemove.length + strTextStyleRemoved);
 	} else return false;
-}
-
-function createCheckbox(item,state,frame) {
-	var checkbox = NSButton.alloc().initWithFrame(frame),
-		state = (state == false) ? NSOffState : NSOnState;
-
-	checkbox.setButtonType(NSSwitchButton);
-	checkbox.setBezelStyle(0);
-	checkbox.setTitle(item.name);
-	checkbox.setTag(item.value);
-	checkbox.setState(state);
-
-	return checkbox;
 }
 
 function createBoldLabel(text,size,frame) {
@@ -115,6 +156,19 @@ function createBoldLabel(text,size,frame) {
 	label.setSelectable(0);
 
 	return label;
+}
+
+function createCheckbox(item,state,frame) {
+	var checkbox = NSButton.alloc().initWithFrame(frame),
+		state = (state == false) ? NSOffState : NSOnState;
+
+	checkbox.setButtonType(NSSwitchButton);
+	checkbox.setBezelStyle(0);
+	checkbox.setTitle(item.name);
+	checkbox.setTag(item.value);
+	checkbox.setState(state);
+
+	return checkbox;
 }
 
 function createContentView(frame) {
@@ -144,13 +198,13 @@ function getUnusedStyles(type) {
 			layerLoop = layers.objectEnumerator(),
 			layer;
 
-			while (layer = layerLoop.nextObject()) {
-				var styleID = String(layer.style().sharedObjectID());
+		while (layer = layerLoop.nextObject()) {
+			var styleID = String(layer.style().sharedObjectID());
 
-				if (usedStyleIDs.indexOf(styleID) == -1) {
-					usedStyleIDs.push(styleID);
-				}
+			if (usedStyleIDs.indexOf(styleID) == -1) {
+				usedStyleIDs.push(styleID);
 			}
+		}
 	}
 
 	var unusedStyles = NSMutableArray.array(),
