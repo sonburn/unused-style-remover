@@ -38,5 +38,6 @@
 	"authorEmail" : "jason.burns@synchronoss.com",
 	"name" : "Unused Style Remover",
 	"icon" : "icon.png",
-	"appcast" : "https://raw.githubusercontent.com/sonburn/unused-style-remover/master/appcast.xml"
+	"appcast" : "https://raw.githubusercontent.com/sonburn/unused-style-remover/master/appcast.xml",
+	"homepage" : "https://github.com/sonburn/unused-style-remover"
 }
