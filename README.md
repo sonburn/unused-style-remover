@@ -39,6 +39,7 @@ To find your plugins directory...
 
 # Changelog
 
+* **0.4** - Fixes for Sketch 52.
 * **0.3** - Added plugin icon to manifest for Sketch 50.
 * **0.2** - Added section checkboxes, parameterized strings, and improved empty states.
 * **0.1** - Initial commit.

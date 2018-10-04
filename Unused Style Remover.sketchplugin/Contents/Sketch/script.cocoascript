@@ -12,7 +12,8 @@ var strPluginName = "Unused Style Remover",
 var remover = function(context) {
 	var alertWindow = COSAlertWindow.new(),
 		pluginIconPath = context.plugin.urlForResourceNamed("icon.png").path(),
-		pluginIcon = NSImage.alloc().initByReferencingFile(pluginIconPath);
+		pluginIcon = NSImage.alloc().initByReferencingFile(pluginIconPath),
+		sketchVersion = NSBundle.mainBundle().infoDictionary()["CFBundleShortVersionString"];
 
 	alertWindow.setIcon(pluginIcon);
 	alertWindow.setMessageText(strPluginName);
@@ -23,7 +24,7 @@ var remover = function(context) {
 		contentFrameGutter = 15,
 		listItemHeight = 24;
 
-	var unusedLayerStyles = getUnusedStyles(0);
+	var unusedLayerStyles = (sketchVersion < 52) ? getUnusedStylesOld(0) : getUnusedStyles(0);
 
 	if (unusedLayerStyles.length > 0) {
 		var layerStyleTitle = createContentView(NSMakeRect(0,0,contentFrameWidth,18)),
@@ -50,7 +51,11 @@ var remover = function(context) {
 			layerStyleCheckboxes = [];
 
 		for (var i = 0; i < unusedLayerStyles.length; i++) {
-			var unusedLayerStyle = createCheckbox({name:unusedLayerStyles[i].name(),value:i},1,NSMakeRect(0,listItemHeight*layerStyleCount,layerStyleWidth,listItemHeight));
+			if (sketchVersion < 52) {
+				var unusedLayerStyle = createCheckbox({name:unusedLayerStyles[i].name(),value:i},1,NSMakeRect(0,listItemHeight*layerStyleCount,layerStyleWidth,listItemHeight));
+			} else {
+				var unusedLayerStyle = createCheckbox({name:unusedLayerStyles[i].name,value:i},1,NSMakeRect(0,listItemHeight*layerStyleCount,layerStyleWidth,listItemHeight));
+			}
 
 			layerStyleCheckboxes.push(unusedLayerStyle);
 			layerStyleContent.addSubview(unusedLayerStyle);
@@ -67,7 +72,7 @@ var remover = function(context) {
 		alertWindow.addAccessoryView(layerStyleLabel);
 	}
 
-	var unusedTextStyles = getUnusedStyles(1);
+	var unusedTextStyles = (sketchVersion < 52) ? getUnusedStylesOld(1) : getUnusedStyles(1);
 
 	if (unusedTextStyles.length > 0) {
 		var textStyleTitle = createContentView(NSMakeRect(0,0,contentFrameWidth,18)),
@@ -94,7 +99,11 @@ var remover = function(context) {
 			textStyleCheckboxes = [];
 
 		for (var i = 0; i < unusedTextStyles.length; i++) {
-			var unusedTextStyle = createCheckbox({name:unusedTextStyles[i].name(),value:i},1,NSMakeRect(0,listItemHeight*textStyleCount,textStyleWidth,listItemHeight));
+			if (sketchVersion < 52) {
+				var unusedTextStyle = createCheckbox({name:unusedTextStyles[i].name(),value:i},1,NSMakeRect(0,listItemHeight*textStyleCount,textStyleWidth,listItemHeight));
+			} else {
+				var unusedTextStyle = createCheckbox({name:unusedTextStyles[i].name,value:i},1,NSMakeRect(0,listItemHeight*textStyleCount,textStyleWidth,listItemHeight));
+			}
 
 			textStyleCheckboxes.push(unusedTextStyle);
 			textStyleContent.addSubview(unusedTextStyle);
@@ -133,11 +142,23 @@ var remover = function(context) {
 		}
 
 		for (var i = 0; i < layerStylesToRemove.length; i++) {
-			context.document.documentData().layerStyles().removeSharedStyle(layerStylesToRemove[i]);
+			var styles = context.document.documentData().layerStyles();
+
+			if (styles.sharedStyleWithID) {
+				styles.removeSharedStyle(styles.sharedStyleWithID(layerStylesToRemove[i].id));
+			} else {
+				styles.removeSharedStyle(layerStylesToRemove[i]);
+			}
 		}
 
 		for (var i = 0; i < textStylesToRemove.length; i++) {
-			context.document.documentData().layerTextStyles().removeSharedStyle(textStylesToRemove[i]);
+			var styles = context.document.documentData().layerTextStyles();
+
+			if (styles.sharedStyleWithID) {
+				styles.removeSharedStyle(styles.sharedStyleWithID(textStylesToRemove[i].id));
+			} else {
+				styles.removeSharedStyle(textStylesToRemove[i]);
+			}
 		}
 
 		context.document.reloadInspector();
@@ -203,6 +224,25 @@ function createScrollView(frame) {
 }
 
 function getUnusedStyles(type) {
+	var document = require("sketch").getSelectedDocument();
+
+	var unusedStyles = NSMutableArray.array(),
+		styles = (type == 0) ? document.getSharedLayerStyles() : document.getSharedTextStyles();
+
+	styles.forEach(function(style) {
+		var styles = style.getAllInstances();
+
+		if (!styles.length) {
+			unusedStyles.addObject(style);
+		}
+	});
+
+	var sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending("name",1);
+
+	return unusedStyles.sortedArrayUsingDescriptors([sortByName]);
+}
+
+function getUnusedStylesOld(type) {
 	var usedStyleIDs = [],
 		pageLoop = MSDocument.currentDocument().pages().objectEnumerator(),
 		page;
