@@ -6,15 +6,15 @@
 		<description>Remove unused layer and text styles.</description>
 		<language>en</language>
 		<item>
-			<title>Version 0.4</title>
+			<title>Version 0.5</title>
 			<description>
 				<![CDATA[
 				<ul>
-				<li>Fixes for Sketch 52.</li>
+				<li>Fixes for Sketch 53.</li>
 				</ul>
 				]]>
 			</description>
-			<enclosure url="https://github.com/sonburn/unused-style-remover/archive/master.zip" sparkle:version="0.4" />
+			<enclosure url="https://github.com/sonburn/unused-style-remover/archive/master.zip" sparkle:version="0.5" />
 		</item>
 	</channel>
 </rss>

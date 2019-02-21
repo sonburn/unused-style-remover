@@ -39,6 +39,7 @@ To find your plugins directory...
 
 # Changelog
 
+* **0.5** - Fixes for Sketch 53.
 * **0.4** - Fixes for Sketch 52.
 * **0.3** - Added plugin icon to manifest for Sketch 50.
 * **0.2** - Added section checkboxes, parameterized strings, and improved empty states.
@@ -54,4 +55,4 @@ If you find this plugin helpful, or would like to support my plugins in general,
 
 # License
 
-Copyright (c) 2018 Jason Burns (Sonburn). See LICENSE.md for further details.
+Copyright (c) 2019 Jason Burns (Sonburn). See LICENSE.md for further details.

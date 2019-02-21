@@ -1,25 +1,37 @@
 {
+	"name" : "Unused Style Remover",
+	"description" : "Remove unused layer and text styles.",
 	"author" : "Jason Burns",
+	"homepage" : "https://github.com/sonburn/unused-style-remover",
+	"version" : "0.5",
+	"identifier" : "com.sonburn.sketchplugins.unused-style-remover",
+	"appcast" : "https://raw.githubusercontent.com/sonburn/unused-style-remover/master/appcast.xml",
+	"icon" : "icon.png",
 	"commands" : [
 		{
 			"name" : "Unused Style Remover",
 			"shortcut" : "cmd option shift u",
 			"identifier" : "remover",
 			"description" : "Remove unused layer and text styles.",
-			"script" : "script.cocoascript",
-			"icon" : "icon-sr.png",
+			"script" : "script.js",
 			"handler" : "remover"
 		},
 		{
 			"name": "Report Issue",
 			"identifier": "report",
-			"script" : "script.cocoascript",
+			"script" : "script.js",
 			"handler": "report"
+		},
+		{
+			"name": "Other Plugins",
+			"identifier": "plugins",
+			"script" : "script.js",
+			"handler": "plugins"
 		},
 		{
 			"name": "Donate",
 			"identifier": "donate",
-			"script" : "script.cocoascript",
+			"script" : "script.js",
 			"handler": "donate"
 		}
 	],
@@ -29,15 +41,8 @@
 			"remover",
 			"-",
 			"report",
+			"plugins",
 			"donate"
 		]
-	},
-	"identifier" : "com.sonburn.sketchplugins.unused-style-remover",
-	"version" : "0.4",
-	"description" : "Remove unused layer and text styles.",
-	"authorEmail" : "jason.burns@synchronoss.com",
-	"name" : "Unused Style Remover",
-	"icon" : "icon.png",
-	"appcast" : "https://raw.githubusercontent.com/sonburn/unused-style-remover/master/appcast.xml",
-	"homepage" : "https://github.com/sonburn/unused-style-remover"
+	}
 }
